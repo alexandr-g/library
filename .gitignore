@@ -36,4 +36,4 @@ node_modules
 *.DS_Store
 
 # dist_folders
-public/
+public/lib
