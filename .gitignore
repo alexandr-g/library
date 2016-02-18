@@ -37,3 +37,6 @@ node_modules
 
 # dist_folders
 public/lib
+
+# IDE files
+.idea/
