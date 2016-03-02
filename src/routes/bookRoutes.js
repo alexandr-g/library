@@ -1,30 +1,27 @@
 var express = require('express');
-
 var bookRouter = express.Router();
+var mongodb = require('mongodb').MongoClient;
 
 var router = function (nav) {
-    var books = [
-        {
-            title: 'War and Peace',
-            genre: 'Historical Fiction',
-            author: 'Lev Nikolayevich Tolstoy',
-            read: false
-        },
-        {
-            title: 'Les Miserables',
-            genre: 'Historical Fiction',
-            author: 'Victor Hugo',
-            read: false
-        }
-];
+
     bookRouter.route('/')
         .get(function (req, res) {
-            res.render('booksListView', {
-                title: 'Books',
-                nav: nav,
-                books: books
-            });
-        });
+          var url = 'mongodb://localhost:27017/libraryApp';
+
+          mongodb.connect(url, function(err, db) {
+              var collection = db.collection('books');
+
+              collection.find({}).toArray(
+                function(err, results) {
+                  res.render('booksListView', {
+                      title: 'Books',
+                      nav: nav,
+                      books: results
+                  });
+              });
+          });
+      });
+
     bookRouter.route('/:id')
         .get(function (req, res) {
             var id = req.params.id;
